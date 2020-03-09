@@ -11,6 +11,7 @@ const functionFlexIntervals = (interface) => {
   var minChangeTime = 3000;
   var counter = 1;
   var isPaused = false;
+  var isVideo = false;
   var changeTimeout = 0;
   var nextChangeTime = 0;
 
@@ -63,14 +64,17 @@ const functionFlexIntervals = (interface) => {
   interface.registerListener('changedActiveImage', index => {
     clearTimeout(changeTimeout);
     // detect manual image change
-    if (new Date().getTime() < nextChangeTime) {
-      counter = 1;
-    }
-    const additionalChange = Math.max(minChangeTime, Math.round(config.interval*counter/config.imageCount));
-    nextChangeTime = new Date().getTime() + additionalChange;
+    if ((new Date().getTime() < nextChangeTime) && (!isVideo)) {
+        counter = 1;
+        interface.logger.warn('counter reset');
+    };
+    isVideo = (interface.images[index].src.match(/\.mp4$/i));
     // introduce an additional picture change:
     if (!isPaused && counter < config.imageCount) {
+      const additionalChange = Math.max(minChangeTime, Math.round(config.interval*counter/config.imageCount));
+      nextChangeTime = new Date().getTime() + additionalChange;
       setChangeTimer(additionalChange);
+      interface.logger.info('Additional change in ' + additionalChange);
       counter += 1;
     };
   });
