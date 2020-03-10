@@ -22,7 +22,7 @@ const functionFlexIntervals = (interface) => {
   const setChangeTimer = (additionalChange) => {
     clearTimeout(changeTimeout);
     if (!isPaused ) {
-      // to enable logging execute: `~/TeleFrame/tools/addon_control flexInterval config logNextChangeInterval true`
+      // to enable logging execute: `~/TeleFrame/tools/addon_control.sh config flexInterval logNextChangeInterval true`
       if (interface.config.logNextChangeInterval) {
         interface.logger.info("additional change in: " + additionalChange);
       }
