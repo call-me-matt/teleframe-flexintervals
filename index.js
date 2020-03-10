@@ -6,7 +6,7 @@
 const functionFlexIntervals = (interface) => {
 
   var config;
-  // show the image for at least two seconds and
+  // show the image for at least three seconds and
   // calculate the real value as soon as the config is available
   var minChangeTime = 3000;
   var counter = 1;
@@ -66,7 +66,6 @@ const functionFlexIntervals = (interface) => {
     // detect manual image change
     if ((new Date().getTime() < nextChangeTime) && (!isVideo)) {
         counter = 1;
-        interface.logger.warn('counter reset');
     };
     isVideo = (interface.images[index].src.match(/\.mp4$/i));
     // introduce an additional picture change:
@@ -74,7 +73,6 @@ const functionFlexIntervals = (interface) => {
       const additionalChange = Math.max(minChangeTime, Math.round(config.interval*counter/config.imageCount));
       nextChangeTime = new Date().getTime() + additionalChange;
       setChangeTimer(additionalChange);
-      interface.logger.info('Additional change in ' + additionalChange);
       counter += 1;
     };
   });
